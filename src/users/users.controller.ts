@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -7,8 +7,8 @@ export class UsersController {
     return 'This is Users Controller';
   }
   @Post('/')
-  public createUser() {
-    return 'User created';
+  public createUser(@Body() body: { name: string }) {
+    return body;
   }
   @Patch('/')
   public updateUser() {
