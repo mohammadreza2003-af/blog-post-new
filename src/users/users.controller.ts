@@ -25,10 +25,7 @@ export class UsersController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    console.log('user param:', getUserParams);
-
-    console.log('limit and page:', limit, page);
-    return 'This is Users Controller';
+    return this.userService.findAll(getUserParams, limit, page);
   }
   @Post('/')
   public createUser(@Body() createUserDto: CreateUserDto) {
