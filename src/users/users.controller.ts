@@ -11,16 +11,17 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { GetUserParamsDto } from './dtos/get-user-params.dto';
 
 @Controller('users')
 export class UsersController {
   @Get('{/:id}')
   public getUsers(
-    @Param('id', ParseIntPipe) id: number | undefined,
+    @Param() getUserParams: GetUserParamsDto,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    console.log('ID:', id);
+    console.log('user param:', getUserParams);
 
     console.log('limit and page:', limit, page);
     return 'This is Users Controller';
