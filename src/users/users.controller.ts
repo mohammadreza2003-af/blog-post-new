@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamsDto } from './dtos/get-user-params.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -32,7 +33,8 @@ export class UsersController {
     return 'User created';
   }
   @Patch('/')
-  public updateUser() {
+  public updateUser(@Body() updateUserDto: UpdateUserDto) {
+    console.log('UpdateUserDto:', updateUserDto);
     return 'User updated';
   }
   @Delete('/')
