@@ -1,9 +1,19 @@
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
-  @Get('/')
-  public funcation() {
+  @Get('{/:id}')
+  public getUsers(@Param('id', ParseIntPipe) id: number | undefined) {
+    console.log('ID:', id);
     return 'This is Users Controller';
   }
   @Post('/')
