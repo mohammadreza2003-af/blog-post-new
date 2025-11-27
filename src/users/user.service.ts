@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GetUserParamsDto } from '../dtos/get-user-params.dto';
+import { GetUserParamsDto } from './dtos/get-user-params.dto';
 
 @Injectable()
 export class UserService {
@@ -12,5 +12,14 @@ export class UserService {
         email: 'ali@gmail.com',
       },
     ];
+  }
+
+  public findOneById(id: number) {
+    console.log(id);
+    return {
+      firstName: 'Ali',
+      lastName: 'Reza',
+      email: 'ali@gmail.com',
+    };
   }
 }

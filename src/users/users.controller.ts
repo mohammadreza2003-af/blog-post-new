@@ -13,7 +13,7 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamsDto } from './dtos/get-user-params.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { UserService } from './providers/user.service';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class UsersController {
