@@ -14,7 +14,7 @@ export class UserService {
     ];
   }
 
-  public findOneById(id: number) {
+  public findOneById(id: string) {
     console.log(id);
     return {
       firstName: 'Ali',
