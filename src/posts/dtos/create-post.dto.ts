@@ -9,9 +9,12 @@ import {
   IsUrl,
   Matches,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 import { postStatus, postType } from '../enums';
 import { Optional } from '@nestjs/common';
+import { CreatePostMetaOptionsDto } from './create-post-meta-options.dto';
+import { Type } from 'class-transformer';
 
 export class CreatePostDto {
   @IsString()
@@ -55,5 +58,9 @@ export class CreatePostDto {
   @MinLength(3, { each: true })
   tags: string[];
 
-  metaOptions: { key: string; value: string }[];
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreatePostMetaOptionsDto)
+  metaOptions: CreatePostMetaOptionsDto[];
 }
