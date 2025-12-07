@@ -97,7 +97,7 @@ export class CreatePostDto {
   @IsArray()
   @IsString({ each: true })
   @MinLength(3, { each: true })
-  tags: string[];
+  tags?: string[];
 
   @ApiPropertyOptional({
     description: "Post's meta options",
@@ -123,5 +123,5 @@ export class CreatePostDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreatePostMetaOptionsDto)
-  metaOptions: CreatePostMetaOptionsDto[];
+  metaOptions?: CreatePostMetaOptionsDto[];
 }
