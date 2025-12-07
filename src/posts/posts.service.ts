@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from 'src/users/user.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly usersService: UsersService) {}
   public findAll(id: string) {
-    const user = this.userService.findOneById(id);
+    const user = this.usersService.findOneById(id);
     return [
       {
         user,

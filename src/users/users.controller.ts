@@ -13,12 +13,12 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamsDto } from './dtos/get-user-params.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UsersService) {}
 
   @Get('{/:id}')
   @ApiOperation({
