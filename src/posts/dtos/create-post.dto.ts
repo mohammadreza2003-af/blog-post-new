@@ -14,7 +14,7 @@ import {
 import { postStatus, postType } from '../enums';
 import { Optional } from '@nestjs/common';
 import { CreatePostMetaOptionsDto } from './create-post-meta-options.dto';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class CreatePostDto {
   @IsString()
@@ -28,7 +28,11 @@ export class CreatePostDto {
 
   @IsString()
   @IsNotEmpty()
-  @Matches('/[a-zA-Z-_#.+~/&?=:%0-9]+/')
+  @Transform(({ value }: { value: string }) => value.trim())
+  @Transform(({ value }: { value: string }) => value.trim().toLowerCase())
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+    message: 'Slug must contain only letters, numbers, and hyphens.',
+  })
   slug: string;
 
   @IsEnum(postStatus)

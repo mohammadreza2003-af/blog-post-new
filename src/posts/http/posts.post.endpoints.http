@@ -1,0 +1,15 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "title": "What is new with nest js",
+    "postType" : "post",
+    "slug": "what-is-new-with-nest-js",
+    "status": "draft",
+    "content": "Test",
+    "featuredImageUrl": "exmple.com",
+    "schema": "{\"width\":1080,\"height\":1080,\"background\":\"#000000\"}",
+    "publishOn": "2022-01-01T12:00:00.000Z",
+    "tags": ["tag1", "tag2", "tag3"],
+    "metaOptions": [{"key": "author", "value": "John Doe"}]
+}
