@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { UpdatePostDto } from './dtos/update-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -10,8 +12,21 @@ export class PostsController {
   public getPosts(@Param('userID') userId: string) {
     return this.postsService.findAll(userId);
   }
+
+  @ApiOperation({
+    summary: 'Create a post',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
   @Post()
   public createPost(@Body() createPostDto: CreatePostDto) {
     console.log(createPostDto);
+  }
+
+  @Patch()
+  public updatePost(@Body() updatePostDto: UpdatePostDto) {
+    console.log(updatePostDto);
   }
 }
