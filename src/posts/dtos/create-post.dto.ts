@@ -8,6 +8,7 @@ import {
   IsString,
   IsUrl,
   Matches,
+  MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
@@ -25,6 +26,7 @@ export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
+  @MaxLength(512)
   title: string;
 
   @ApiProperty({
@@ -41,6 +43,7 @@ export class CreatePostDto {
   })
   @IsString()
   @IsNotEmpty()
+  @MaxLength(256)
   @Transform(({ value }: { value: string }) => value.trim().toLowerCase())
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
     message: 'Slug must contain only letters, numbers, and hyphens.',
@@ -79,6 +82,7 @@ export class CreatePostDto {
   })
   @IsOptional()
   @IsUrl()
+  @MaxLength(1024)
   featuredImageUrl?: string;
 
   @ApiPropertyOptional({
