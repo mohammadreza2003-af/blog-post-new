@@ -29,12 +29,7 @@ export class PostsService {
   }
 
   public async deletePost(id: number) {
-    const post = await this.postRepository.findOneBy({ id });
-
     await this.postRepository.delete(id);
-    if (post?.metaOptions)
-      await this.metaOptionRepository.delete(post?.metaOptions?.id);
-
     return { message: 'Post deleted successfully', id };
   }
 }
