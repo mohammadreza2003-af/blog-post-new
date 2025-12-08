@@ -20,14 +20,11 @@ export class PostsService {
     const post = this.postRepository.create(createPostDto);
     return await this.postRepository.save(post);
   }
-  public findAll(id: string) {
+  public async findAll(id: string) {
     const user = this.usersService.findOneById(id);
-    return [
-      {
-        user,
-        title: 'test',
-        content: 'test',
-      },
-    ];
+    const posts = await this.postRepository.find({
+      relations: { metaOptions: true },
+    });
+    return posts;
   }
 }
