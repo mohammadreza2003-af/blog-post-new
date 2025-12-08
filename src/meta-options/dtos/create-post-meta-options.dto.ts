@@ -5,5 +5,5 @@ export class CreatePostMetaOptionsDto {
   @ApiProperty()
   @IsJSON()
   @IsNotEmpty()
-  metaValue: any;
+  metaValue: string;
 }

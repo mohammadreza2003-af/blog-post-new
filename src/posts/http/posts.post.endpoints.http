@@ -2,14 +2,14 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "What is new with nest js",
+    "title": "What is new with nest js-2",
     "postType" : "post",
-    "slug": "what-is-new-with-nest-js",
+    "slug": "what-is-new-with-nest-js-2",
     "status": "draft",
     "content": "Test",
     "featuredImageUrl": "exmple.com",
     "schema": "{\"width\":1080,\"height\":1080,\"background\":\"#000000\"}",
     "publishOn": "2022-01-01T12:00:00.000Z",
     "tags": ["tag1", "tag2", "tag3"],
-    "metaOptions": [{"key": "author", "value": "John Doe"}]
+    "metaOptions": {"metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"}
 }
