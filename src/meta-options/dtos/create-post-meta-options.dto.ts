@@ -1,7 +1,9 @@
-import { IsJSON, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsJSON, IsNotEmpty } from 'class-validator';
 
 export class CreatePostMetaOptionsDto {
-  @IsString()
+  @ApiProperty()
   @IsJSON()
-  metaValue: string;
+  @IsNotEmpty()
+  metaValue: any;
 }
