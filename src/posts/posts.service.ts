@@ -17,11 +17,19 @@ export class PostsService {
   ) {}
 
   public async createPost(createPostDto: CreatePostDto) {
-    const post = this.postRepository.create(createPostDto);
-    return await this.postRepository.save(post);
+    const author = await this.usersService.findOneById(createPostDto.authorId);
+    if (author) {
+      const post = this.postRepository.create({
+        ...createPostDto,
+        author: author,
+      });
+      return await this.postRepository.save(post);
+    }
+
+    return "User doesn't exist";
   }
-  public async findAll(id: string) {
-    const user = this.usersService.findOneById(id);
+  public async findAll(id: number) {
+    // const user = this.usersService.findOneById(id);
     const posts = await this.postRepository.find({
       relations: { metaOptions: true },
     });

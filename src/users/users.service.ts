@@ -28,13 +28,9 @@ export class UsersService {
     ];
   }
 
-  public findOneById(id: string) {
-    console.log(id);
-    return {
-      firstName: 'Ali',
-      lastName: 'Reza',
-      email: 'ali@gmail.com',
-    };
+  public async findOneById(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    return user;
   }
   public async createUser(createUserDto: CreateUserDto) {
     const { email } = createUserDto;
