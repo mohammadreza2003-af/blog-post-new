@@ -32,12 +32,13 @@ export class PostsController {
   })
   @Post()
   public createPost(@Body() createPostDto: CreatePostDto) {
+    console.log(createPostDto);
     return this.postsService.createPost(createPostDto);
   }
 
   @Patch()
   public updatePost(@Body() updatePostDto: UpdatePostDto) {
-    console.log(updatePostDto);
+    return this.postsService.updatePost(updatePostDto);
   }
 
   @Delete()

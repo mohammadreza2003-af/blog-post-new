@@ -96,13 +96,12 @@ export class CreatePostDto {
 
   @ApiPropertyOptional({
     description: "Post's tags",
-    example: ['tag1', 'tag2'],
+    example: [1, 2],
   })
-  @Optional()
+  @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  @MinLength(3, { each: true })
-  tags?: string[];
+  @IsInt({ each: true })
+  tags?: number[];
 
   @IsOptional()
   @ValidateNested({ each: true })

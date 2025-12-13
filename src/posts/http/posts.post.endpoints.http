@@ -2,9 +2,9 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "What is new with nest js-3",
+    "title": "What is new with nest js-4",
     "postType" : "post",
-    "slug": "what-is-new-with-nest-js-3",
+    "slug": "what-is-new-with-nest-js-4",
     "status": "draft",
     "content": "Test",
     "featuredImageUrl": "exmple.com",
@@ -12,5 +12,6 @@ Content-Type: application/json
     "publishOn": "2022-01-01T12:00:00.000Z",
     "tags": ["tag1", "tag2", "tag3"],
     "metaOptions": {"metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"},
-    "authorId": 2
+    "authorId": 3,
+    "tags": [2]
 }
