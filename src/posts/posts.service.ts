@@ -7,6 +7,7 @@ import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { TagsService } from 'src/tags/tags.service';
 import { UpdatePostDto } from './dtos/update-post.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PostsService {
@@ -17,6 +18,7 @@ export class PostsService {
     private readonly metaOptionRepository: Repository<MetaOption>,
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
+    private readonly configService: ConfigService,
   ) {}
 
   public async createPost(createPostDto: CreatePostDto) {
@@ -73,6 +75,7 @@ export class PostsService {
   }
 
   public async findAll(id: number) {
+    console.log(this.configService.get('TEST'));
     console.log(id);
     // const user = this.usersService.findOneById(id);
     const posts = await this.postRepository.find({
