@@ -1,4 +1,12 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { GetUserParamsDto } from './dtos/get-user-params.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,32 +32,55 @@ export class UsersService {
     >,
   ) {}
   public findAll(getUserParams: GetUserParamsDto, limit: number, page: number) {
-    console.log(getUserParams, limit, page);
-    return [
+    throw new HttpException(
       {
-        firstName: 'Ali',
-        lastName: 'Reza',
-        email: 'ali@gmail.com',
+        status: HttpStatus.MOVED_PERMANENTLY,
+        error: 'The APi endpoint does not exist',
       },
-    ];
+      HttpStatus.MOVED_PERMANENTLY,
+      {
+        description: 'APi moved permenently',
+      },
+    );
   }
 
   public async findOneById(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    let user: User | null = null;
+    try {
+      user = await this.userRepository.findOneBy({ id });
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'Database connection error',
+      });
+    }
+    if (!user) {
+      throw new BadRequestException(`User not found with this ${id} ID`);
+    }
     return user;
   }
   public async createUser(createUserDto: CreateUserDto) {
     const { email } = createUserDto;
-    const existingUser = await this.userRepository.findOne({
-      where: { email },
-    });
-
-    if (existingUser) {
-      return 'User is already exists!';
+    let existingUser: User | null = null;
+    try {
+      existingUser = await this.userRepository.findOne({
+        where: { email },
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'Database connection error',
+      });
     }
 
+    if (existingUser) throw new BadRequestException('User already exists');
+
     const newUser = this.userRepository.create(createUserDto);
-    await this.userRepository.save(newUser);
+    try {
+      await this.userRepository.save(newUser);
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'Datbase connection error',
+      });
+    }
     return newUser;
   }
 }
