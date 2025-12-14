@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
+import * as config from '@nestjs/config';
+import profileConfig from './config/profile.config';
 
 /**
  * Class to connect Users table and perform bussiness oprations
@@ -16,6 +18,10 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
+    @Inject(profileConfig.KEY)
+    private readonly profileConfiguration: config.ConfigType<
+      typeof profileConfig
+    >,
   ) {}
   public findAll(getUserParams: GetUserParamsDto, limit: number, page: number) {
     console.log(getUserParams, limit, page);
