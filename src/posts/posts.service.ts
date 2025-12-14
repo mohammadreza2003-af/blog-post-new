@@ -73,6 +73,7 @@ export class PostsService {
   }
 
   public async findAll(id: number) {
+    console.log(id);
     // const user = this.usersService.findOneById(id);
     const posts = await this.postRepository.find({
       relations: { metaOptions: true, author: true },
