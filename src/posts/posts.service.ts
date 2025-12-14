@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { TagsService } from 'src/tags/tags.service';
-import { Tag } from 'src/tags/tag.entity';
 import { UpdatePostDto } from './dtos/update-post.dto';
 
 @Injectable()
@@ -22,20 +21,22 @@ export class PostsService {
 
   public async createPost(createPostDto: CreatePostDto) {
     const author = await this.usersService.findOneById(createPostDto.authorId);
-    let tags: Tag[] = [];
-    if (createPostDto.tags) {
-      tags = await this.tagsService.findMultipleTags(createPostDto.tags);
-    }
+
+    const tags = createPostDto.tags
+      ? await this.tagsService.findMultipleTags(createPostDto.tags)
+      : [];
     if (author) {
       const post = this.postRepository.create({
         ...createPostDto,
         author: author,
-        tags: tags,
+        tags,
+        metaOptions: createPostDto.metaOptions
+          ? this.metaOptionRepository.create(createPostDto.metaOptions)
+          : null,
       });
       return await this.postRepository.save(post);
     }
-
-    return "User doesn't exist";
+    return 'User not found';
   }
 
   public async updatePost(updatePostDto: UpdatePostDto) {

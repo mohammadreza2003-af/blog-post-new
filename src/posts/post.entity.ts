@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -59,6 +60,7 @@ export class Post {
     type: 'text',
   })
   schema?: string;
+
   @Column({
     nullable: true,
     length: 1024,
@@ -74,16 +76,16 @@ export class Post {
   publishOn?: Date;
 
   @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
-    cascade: true,
+    cascade: ['insert'], // مهم
     eager: true,
   })
   metaOptions?: MetaOption | null;
 
-  @ManyToOne(() => Tag, (tag) => tag.posts, {
+  @ManyToMany(() => Tag, (tag) => tag.posts, {
     eager: true,
   })
   @JoinTable()
-  tags?: Tag[];
+  tags: Tag[];
 
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
