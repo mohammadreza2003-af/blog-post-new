@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import { Post } from './post.entity';
@@ -42,12 +46,19 @@ export class PostsService {
   }
 
   public async updatePost(updatePostDto: UpdatePostDto) {
-    const post = await this.postRepository.findOneBy({
-      id: updatePostDto.id,
-    });
+    let post: Post | null = null;
+    try {
+      post = await this.postRepository.findOneBy({
+        id: updatePostDto.id,
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'Database connection error',
+      });
+    }
 
     if (!post) {
-      throw new NotFoundException('Post not found');
+      throw new BadRequestException('Post not found');
     }
 
     const updatableFields = [
@@ -66,12 +77,23 @@ export class PostsService {
         post[field] = updatePostDto[field];
       }
     }
-
-    if (updatePostDto.tags) {
-      post.tags = await this.tagsService.findMultipleTags(updatePostDto.tags);
+    try {
+      if (updatePostDto.tags) {
+        post.tags = await this.tagsService.findMultipleTags(updatePostDto.tags);
+      }
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'Database connection error',
+      });
     }
 
-    return await this.postRepository.save(post);
+    try {
+      return await this.postRepository.save(post);
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'Database connection error',
+      });
+    }
   }
 
   public async findAll(id: number) {
