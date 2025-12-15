@@ -12,6 +12,7 @@ import { CreatePostDto } from './dtos/create-post.dto';
 import { TagsService } from 'src/tags/tags.service';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { ConfigService } from '@nestjs/config';
+import { GetPostsDto } from './dtos/get-posts.dto';
 
 @Injectable()
 export class PostsService {
@@ -96,16 +97,14 @@ export class PostsService {
     }
   }
 
-  public async findAll(id: number) {
-    console.log(this.configService.get('TEST'));
-    console.log(id);
-    // const user = this.usersService.findOneById(id);
+  public async findAll(getPostsDto: GetPostsDto, id: number) {
+    const { page = 1, limit = 10 } = getPostsDto;
     const posts = await this.postRepository.find({
-      relations: { metaOptions: true, author: true },
+      take: limit,
+      skip: (page - 1) * limit,
     });
     return posts;
   }
-
   public async deletePost(id: number) {
     await this.postRepository.delete(id);
     return { message: 'Post deleted successfully', id };
