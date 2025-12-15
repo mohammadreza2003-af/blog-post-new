@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   RequestTimeoutException,
 } from '@nestjs/common';
@@ -18,9 +19,14 @@ export class UserCreateManyProvider {
   public async craeteManyUser(createManyUserDto: CreateManyUserDto) {
     const users: User[] = [];
     const queryRunner = this.datasource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'Datbase connection error',
+      });
+    }
     try {
       for (const user of createManyUserDto.users) {
         const { email } = user;
@@ -35,11 +41,12 @@ export class UserCreateManyProvider {
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new RequestTimeoutException(error, {
-        description: 'Datbase connection error',
+      throw new ConflictException("Couldn't complete the transaction", {
+        description: String(error),
       });
     } finally {
       await queryRunner.release();
     }
+    return users;
   }
 }
