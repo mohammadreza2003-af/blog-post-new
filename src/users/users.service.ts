@@ -15,6 +15,8 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import * as config from '@nestjs/config';
 import profileConfig from './config/profile.config';
+import { UserCreateManyProvider } from './providers/user-create-many.provider';
+import { CreateManyUserDto } from './dtos/create-many-user.dto';
 
 /**
  * Class to connect Users table and perform bussiness oprations
@@ -30,6 +32,7 @@ export class UsersService {
     private readonly profileConfiguration: config.ConfigType<
       typeof profileConfig
     >,
+    private readonly userCreateManyProvider: UserCreateManyProvider,
   ) {}
   public findAll(getUserParams: GetUserParamsDto, limit: number, page: number) {
     throw new HttpException(
@@ -82,5 +85,8 @@ export class UsersService {
       });
     }
     return newUser;
+  }
+  public async craeteMany(createManyUserDto: CreateManyUserDto) {
+    return this.userCreateManyProvider.craeteManyUser(createManyUserDto);
   }
 }
