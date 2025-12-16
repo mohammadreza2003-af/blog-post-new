@@ -17,6 +17,7 @@ import * as config from '@nestjs/config';
 import profileConfig from './config/profile.config';
 import { UserCreateManyProvider } from './providers/user-create-many.provider';
 import { CreateManyUserDto } from './dtos/create-many-user.dto';
+import { CreateUserProvider } from './providers/create-user.provider';
 
 /**
  * Class to connect Users table and perform bussiness oprations
@@ -33,6 +34,7 @@ export class UsersService {
       typeof profileConfig
     >,
     private readonly userCreateManyProvider: UserCreateManyProvider,
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
   public findAll(getUserParams: GetUserParamsDto, limit: number, page: number) {
     throw new HttpException(
@@ -62,29 +64,7 @@ export class UsersService {
     return user;
   }
   public async createUser(createUserDto: CreateUserDto) {
-    const { email } = createUserDto;
-    let existingUser: User | null = null;
-    try {
-      existingUser = await this.userRepository.findOne({
-        where: { email },
-      });
-    } catch (error) {
-      throw new RequestTimeoutException(error, {
-        description: 'Database connection error',
-      });
-    }
-
-    if (existingUser) throw new BadRequestException('User already exists');
-
-    const newUser = this.userRepository.create(createUserDto);
-    try {
-      await this.userRepository.save(newUser);
-    } catch (error) {
-      throw new RequestTimeoutException(error, {
-        description: 'Datbase connection error',
-      });
-    }
-    return newUser;
+    return this.createUserProvider.createUser(createUserDto);
   }
   public async craeteMany(createManyUserDto: CreateManyUserDto) {
     return this.userCreateManyProvider.craeteManyUser(createManyUserDto);
