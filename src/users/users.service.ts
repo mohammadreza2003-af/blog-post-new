@@ -18,6 +18,7 @@ import profileConfig from './config/profile.config';
 import { UserCreateManyProvider } from './providers/user-create-many.provider';
 import { CreateManyUserDto } from './dtos/create-many-user.dto';
 import { CreateUserProvider } from './providers/create-user.provider';
+import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.provider';
 
 /**
  * Class to connect Users table and perform bussiness oprations
@@ -35,6 +36,7 @@ export class UsersService {
     >,
     private readonly userCreateManyProvider: UserCreateManyProvider,
     private readonly createUserProvider: CreateUserProvider,
+    private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
   ) {}
   public findAll(getUserParams: GetUserParamsDto, limit: number, page: number) {
     throw new HttpException(
@@ -68,5 +70,8 @@ export class UsersService {
   }
   public async craeteMany(createManyUserDto: CreateManyUserDto) {
     return this.userCreateManyProvider.craeteManyUser(createManyUserDto);
+  }
+  public async findOneUserByEmail(email: string) {
+    return this.findOneUserByEmailProvider.findOneUserByEmail(email);
   }
 }
