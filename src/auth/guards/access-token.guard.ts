@@ -5,11 +5,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import * as config from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import * as config from '@nestjs/config';
 import jwtConfig from 'src/auth/config/jwt.config';
 import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
+import { JwtPayload } from '../interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
@@ -18,29 +19,32 @@ export class AccessTokenGuard implements CanActivate {
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: config.ConfigType<typeof jwtConfig>,
   ) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     const token = this.extractTokenFromHeader(request);
+
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Access token missing');
     }
+
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const payload = await this.jwtService.verifyAsync(
-        token,
-        this.jwtConfiguration,
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
+        secret: this.jwtConfiguration.secret,
+      });
+
       request[REQUEST_USER_KEY] = payload;
+      return true;
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid or expired token');
     }
-    return true;
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, token] = request.headers.authorization?.split(' ') ?? [];
-    return token;
+  private extractTokenFromHeader(request: Request): string | null {
+    const authHeader = request.headers.authorization;
+    if (!authHeader) return null;
+
+    const [type, token] = authHeader.split(' ');
+    return type === 'Bearer' ? token : null;
   }
 }
