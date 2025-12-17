@@ -16,4 +16,5 @@ export default Joi.object({
   JWT_ISSUER: Joi.string().required(),
   JWT_AUDIENCE: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.number().required(),
+  JWT_REFRESH_EXPIRES_IN: Joi.number().required(),
 });
