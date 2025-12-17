@@ -12,13 +12,16 @@ import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { ActiveUserInterface } from 'src/auth/interfaces/active-user.interface';
 import { User } from 'src/users/user.entity';
 import { Tag } from 'src/tags/tag.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class CreateUserProvider {
+export class CreatePostProvider {
   constructor(
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
+    @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    @InjectRepository(MetaOption)
     private readonly metaOptionRepository: Repository<MetaOption>,
   ) {}
 
