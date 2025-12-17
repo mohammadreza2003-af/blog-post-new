@@ -15,6 +15,8 @@ import { ConfigService } from '@nestjs/config';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
+import { ActiveUserInterface } from 'src/auth/interfaces/active-user.interface';
+import { CreateUserProvider } from './providers/create-user.provider';
 
 @Injectable()
 export class PostsService {
@@ -27,26 +29,14 @@ export class PostsService {
     private readonly tagsService: TagsService,
     private readonly configService: ConfigService,
     private readonly paginationProvider: PaginationProvider,
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
 
-  public async createPost(createPostDto: CreatePostDto) {
-    const author = await this.usersService.findOneById(createPostDto.authorId);
-
-    const tags = createPostDto.tags
-      ? await this.tagsService.findMultipleTags(createPostDto.tags)
-      : [];
-    if (author) {
-      const post = this.postRepository.create({
-        ...createPostDto,
-        author: author,
-        tags,
-        metaOptions: createPostDto.metaOptions
-          ? this.metaOptionRepository.create(createPostDto.metaOptions)
-          : null,
-      });
-      return await this.postRepository.save(post);
-    }
-    return 'User not found';
+  public async createPost(
+    createPostDto: CreatePostDto,
+    activeUser: ActiveUserInterface,
+  ) {
+    return this.createUserProvider.createPost(createPostDto, activeUser);
   }
 
   public async updatePost(updatePostDto: UpdatePostDto) {
