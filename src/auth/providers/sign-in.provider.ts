@@ -9,7 +9,6 @@ import { SignInDto } from '../dtos/signin.dto';
 import { UsersService } from 'src/users/users.service';
 import { HashingProvider } from './hashing.provider';
 import { User } from 'src/users/user.entity';
-import jwtConfig from '../config/jwt.config';
 import { GenerateTokensProvider } from './generate-tokens.provider';
 
 @Injectable()
@@ -18,7 +17,6 @@ export class SignInProvider {
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly hashingProvider: HashingProvider,
-    @Inject(jwtConfig.KEY)
     private readonly genrateTokensProvider: GenerateTokensProvider,
   ) {}
   public async signIn(signInDto: SignInDto) {

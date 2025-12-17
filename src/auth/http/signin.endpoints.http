@@ -4,3 +4,9 @@ Content-Type: application/json
     "email": "test32@gmail.com",
     "password": "password123"
 }
+
+POST http://localhost:3000/auth/refresh-token
+Content-Type: application/json
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImlhdCI6MTc2NTk2NjAzMiwiZXhwIjoxNzY1OTY5NjMyLCJhdWQiOiJsb2NhbGhvc3Q6MzAwMCIsImlzcyI6ImxvY2FsaG9zdDozMDAwIn0.L9hhcr9CbJsyUMevHqb0s7B4FdlCtVsVrcBZ9nyy0Yc"
+}
