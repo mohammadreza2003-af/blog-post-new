@@ -12,4 +12,8 @@ export default Joi.object({
   SYNC: Joi.boolean().default(true),
   AUTOLOAD: Joi.boolean().default(true),
   PROFILEKEY: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
+  JWT_ISSUER: Joi.string().required(),
+  JWT_AUDIENCE: Joi.string().required(),
+  JWT_EXPIRES_IN: Joi.number().required(),
 });
