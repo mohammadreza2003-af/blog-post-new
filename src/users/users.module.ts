@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserCreateManyProvider } from './providers/user-create-many.provider';
 import { CreateUserProvider } from './providers/create-user.provider';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.provider';
+import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import profileConfig from './config/profile.config';
 
 @Module({
@@ -17,6 +18,7 @@ import profileConfig from './config/profile.config';
     UserCreateManyProvider,
     CreateUserProvider,
     FindOneUserByEmailProvider,
+    FindOneByGoogleIdProvider,
   ],
   exports: [UsersService],
   imports: [

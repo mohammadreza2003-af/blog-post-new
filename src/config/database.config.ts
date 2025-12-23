@@ -8,6 +8,4 @@ export default registerAs('database', () => ({
   host: process.env.DB_HOST || 'localhost',
   synchronize: process.env.SYNC === 'true' ? true : false,
   autoLoadEntities: process.env.AUTOLOAD === 'true' ? true : false,
-  googleClientId: process.env.GOOGLE_CLIENT_ID,
-  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 }));
