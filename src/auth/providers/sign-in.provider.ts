@@ -27,7 +27,7 @@ export class SignInProvider {
       user = await this.userService.findOneUserByEmail(email);
       isPasswordMatch = await this.hashingProvider.compatePassword(
         password,
-        user.password,
+        user.password ? user.password : '',
       );
     } catch (error) {
       throw new RequestTimeoutException(error, {
