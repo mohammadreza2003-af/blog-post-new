@@ -20,6 +20,8 @@ import { CreateManyUserDto } from './dtos/create-many-user.dto';
 import { CreateUserProvider } from './providers/create-user.provider';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.provider';
 import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
+import { GoogleUser } from './interfaces/google-user.interface';
+import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
 
 /**
  * Class to connect Users table and perform bussiness oprations
@@ -39,6 +41,7 @@ export class UsersService {
     private readonly createUserProvider: CreateUserProvider,
     private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
     private readonly findOneByGoogleIdProvider: FindOneByGoogleIdProvider,
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
   public findAll(getUserParams: GetUserParamsDto, limit: number, page: number) {
     throw new HttpException(
@@ -67,16 +70,19 @@ export class UsersService {
     }
     return user;
   }
-  public async createUser(createUserDto: CreateUserDto) {
+  public createUser(createUserDto: CreateUserDto) {
     return this.createUserProvider.createUser(createUserDto);
   }
-  public async craeteMany(createManyUserDto: CreateManyUserDto) {
+  public craeteMany(createManyUserDto: CreateManyUserDto) {
     return this.userCreateManyProvider.craeteManyUser(createManyUserDto);
   }
-  public async findOneUserByEmail(email: string) {
+  public findOneUserByEmail(email: string) {
     return this.findOneUserByEmailProvider.findOneUserByEmail(email);
   }
-  public async findOneByGoogleId(googleId: string) {
+  public findOneByGoogleId(googleId: string) {
     return this.findOneByGoogleIdProvider.findOneByGoogleId(googleId);
+  }
+  public createGoogleUser(googleUser: GoogleUser) {
+    return this.createGoogleUserProvider.createGoogleUser(googleUser);
   }
 }
